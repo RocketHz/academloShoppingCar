@@ -1,0 +1,232 @@
+html{
+    box-sizing: border-box;
+}
+*, *::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+body {
+    font-family: Helvetica;
+    font-size: 16px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  background-color: white;
+  border-bottom: 1px solid rgba(67, 67, 67, 0.2);
+}
+
+header {
+    height: 350px;
+    background-color: #eb4a5a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Header Styles */
+.heading__content {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9fafc;
+    align-items: center;
+    margin: 0 25px;
+}
+
+.heading__content .logo__academlo {
+    max-width: 7rem;
+}
+.shopping__car {
+  max-width: 7rem;
+}
+.shopping__car img {
+  width: 40px;
+}
+
+.logo__content {
+    background-color: #eb4a5a;
+    display: flex;
+    justify-content: center;
+    padding: 25px 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/* DropDown Styles */
+
+.dropdown__content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+}
+
+.dropdown {
+    width: 10%;
+    box-shadow: 0 4px 12px rgba(67, 67, 67, 0.1);
+    background-color: #f3f3f3;
+    max-width: 800px;
+  }
+  .dropdown ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  .dropdown ul li {
+    font-family: Helvetica;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #434343;
+    display: inline-block;
+    padding: 15px;
+    position: relative;
+  }
+  .dropdown ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 200px;
+  }
+  .dropdown ul li:hover {
+    cursor: pointer;
+    background-color: #f9fafc;
+  }
+  .dropdown ul li:hover ul {
+    display: block;
+    z-index: 99;
+  }
+  .dropdown ul li:hover ul li {
+    display: block;
+    background-color: #f6f3f3;
+  }
+  .dropdown ul li:hover ul li span {
+    float: right;
+    color: #f9fafc;
+    background-color: #eb4a5a;
+    padding: 2px 5px;
+    text-align: center;
+    font-size: 0.8rem;
+    border-radius: 3px;
+  }
+  .dropdown ul li:hover ul li:hover {
+    background-color: #f6f3f3;
+  }
+  .dropdown ul li:hover ul li:hover span {
+    background-color: #eb4a5a;
+  }
+
+  /* Product Content Styles */
+
+  .product__content {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: 60px 110px;
+  }
+
+  .product {
+    background-color: #f9fafc;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(67, 67, 67, 0.1);
+    flex: 1 0 300px;
+    margin: 10px 0;
+  }
+
+  .product__img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .product__name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .circles {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .circle-black {
+    background-color: #434343;
+  }
+  
+  .circle-red {
+    background-color: #eb4a5a;
+  }
+
+  .product__Price__Container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .product__Price {
+    font-size: 16px;
+    color: #434343;
+    text-align: right;
+  }
+
+  .product__content article{
+    max-width: 250px;
+    background: rgba(246, 243, 243, 0.58);
+    border: 1px solid #274671;
+    box-shadow: 12px 17px 51px rgba(67, 67, 67, 0.22);
+    backdrop-filter: blur(6px);
+    border-radius: 17px;
+    cursor: pointer;
+    transition: all 0.5s;
+    user-select: none;
+    font-weight: bolder;
+  }
+
+  .product__content article:hover {
+    border: 1px solid #eb4a5a;
+    transform: scale(1.05);
+  }
+  
+  .product__content article:active {
+    transform: scale(0.95) rotateZ(1.7deg);
+  }
+
+  /* Footer Styles */
+
+  footer {
+    display: flex;
+    justify-content: center;
+    margin: 90px;
+  }
+
+  footer button{
+    width: 25%;
+    height: 50px;
+    border: 1px solid #274671;
+    color: #274671;
+  }
+
+  #reserva-derechos {
+    display: none;
+    color: #eb4a5a;
+  }
