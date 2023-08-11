@@ -8,51 +8,49 @@ html{
 }
 
 body {
-    font-family: Helvetica;
-    font-size: 16px;
+  font: 16px Helvetica;
+}
+
+nav, .heading__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9fafc;
+}
+
+header, .logo__content, footer {
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown__content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 5px 20px;
-  background-color: white;
   border-bottom: 1px solid rgba(67, 67, 67, 0.2);
 }
 
-header {
+header, .logo__content{
     height: 350px;
     background-color: #eb4a5a;
-    display: flex;
-    justify-content: center;
     align-items: center;
 }
 
 /* Header Styles */
-.heading__content {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f9fafc;
-    align-items: center;
+.heading__content, .dropdown__content {
     margin: 0 25px;
 }
 
-.heading__content .logo__academlo {
+.heading__content .logo__academlo, .shopping__car {
     max-width: 7rem;
 }
-.shopping__car {
-  max-width: 7rem;
-}
+
 .shopping__car img {
   width: 40px;
-}
-
-.logo__content {
-    background-color: #eb4a5a;
-    display: flex;
-    justify-content: center;
-    padding: 25px 0;
 }
 
 .container {
@@ -62,13 +60,6 @@ header {
 }
 
 /* DropDown Styles */
-
-.dropdown__content {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 10px;
-}
 
 .dropdown {
     width: 10%;
@@ -81,9 +72,7 @@ header {
     list-style-type: none;
   }
   .dropdown ul li {
-    font-family: Helvetica;
-    font-size: 1rem;
-    font-weight: 400;
+    font: 1rem 400 Helvetica;
     color: #434343;
     display: inline-block;
     padding: 15px;
@@ -117,12 +106,6 @@ header {
     font-size: 0.8rem;
     border-radius: 3px;
   }
-  .dropdown ul li:hover ul li:hover {
-    background-color: #f6f3f3;
-  }
-  .dropdown ul li:hover ul li:hover span {
-    background-color: #eb4a5a;
-  }
 
   /* Product Content Styles */
 
@@ -130,7 +113,6 @@ header {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    margin: 60px 110px;
   }
 
   .product {
@@ -198,7 +180,6 @@ header {
     border-radius: 17px;
     cursor: pointer;
     transition: all 0.5s;
-    user-select: none;
     font-weight: bolder;
   }
 
@@ -214,8 +195,6 @@ header {
   /* Footer Styles */
 
   footer {
-    display: flex;
-    justify-content: center;
     margin: 90px;
   }
 
