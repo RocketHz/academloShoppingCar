@@ -1,144 +1,333 @@
-fetch("/carShop.json")
-  .then((response) => response.json())
-  .then((data) => {
-    const section = document.querySelector("#product");
-    const productsToShow = 15;
-    let productsCount = 0;
 
-    data.map((item) => {
-      if (productsCount < productsToShow) {
-      //create article node
-      const article = document.createElement("article");
-      article.className = 'product';
+async function getApi(){
+  try {
+      const data = await fetch('https://ecommercebackend.fundamentos-29.repl.co/');
+      const res = await data.json();
+      window.localStorage.setItem('products', JSON.stringify(res));
+      return res;
+  } catch (error) {
+      console.log(error);
+  }
+}
 
-      //create img node
-      const img = document.createElement("img");
-      img.className = 'product__img';
-      img.src = item.image;
-      img.alt = item.name;
 
-      //create h3 node
-      const h3 = document.createElement("h3");
-      h3.className = 'product__name';
-      h3.textContent = item.name;
+function events() {
+  const modal = document.querySelector('.modal');
+  const cart_button = document.querySelector('.cart_button');
+  const menu_cart = document.querySelector('.menu_cart');
+  cart_button.addEventListener('click', function () {
+  menu_cart.classList.toggle('active');
+  });
 
-      const circleContainer = document.createElement('div');
-      circleContainer.className = 'circles';
+  modal.addEventListener('click', function(){
+      modal.classList.remove('active');
+  })
+}
+
+function printProducts(db){
+  const productsHTML = document.querySelector('.products');
+  let html = '';
+  for (const product of db.products) {
+      if (product.quantity > 0) {
+          html += `
+              <div class="product">
+                <div class="product_img">
+                  <img id=${product.id} class='modal_img'  src="${product.image}" alt="image_product">
+                  <h3>${product.name}</h3>
+                </div>
+
+                <div class="product_info">
+                    <h4>Precio:$${product.price}</h4>
+                    <p>Stock: ${product.quantity}</p>
+                    <button id= ${product.id} class='cart_buy'>Agregar al carrito</button>
+                </div>
+              </div>
+          `
+      }
+  }
+  productsHTML.innerHTML = html;
+}
+
+function addToCart(db){
+  const productsHTML = document.querySelector('.products');
+  productsHTML.addEventListener('click', function (event) {
+      if(event.target.classList.contains('cart_buy')){
+          const id = Number(event.target.id);
+          const productFind = db.products.find(function (product) {
+              return product.id === id;
+          })
+          //console.log(productFind);
+          if(db.cart[productFind.id]){
+              db.cart[productFind.id].amount++;
+          }else {
+              productFind.amount = 1;
+              db.cart[productFind.id] = productFind;
+          }
+          //console.log(db.cart);
+          window.localStorage.setItem('cart', JSON.stringify(db.cart));
+          printToCart(db);
+          totalCart(db)
+      }
       
-      const circleBlack = document.createElement('div');
-      circleBlack.className = 'circle circle-black';
+  })
+}
+
+function printToCart(db){
+  const cart_products = document.querySelector('.cart_products');
+  let html = '';
+  for(const product in db.cart){
+      const {quantity, price, name, image, id, amount} = db.cart[product];
+      html += `
+          <div class="cart_product">
+              
+              <div class="cart_product_image">
+                  <img id=${product.id} class='modal_img' src='${image}' alt='image product'/>
+              </div>
+              <div class="cart_product_container">
+                  <div class="cart_product_description">
+                      <h3>${name}</h3>
+                      <h4>Precio: $${price}</h4>
+                      <p>Stock: ${quantity}</p>
+                  </div>
+                  <div id=${id} class="cart_counter">
+                      <b class='less'>-</b>
+                      <span>${amount}</span>
+                      <b class='plus'>+</b>
+                      <img class= 'trash' src='./assets/img/trash-fill.webp.png' alt='trash'/>
+                  </div>
+              </div>
+          </div>
+      `;
+  }
+  cart_products.innerHTML = html;
+}
+
+function handleCart(db){
+  const cart_products = document.querySelector('.cart_products');
+  cart_products.addEventListener('click', function (event) {
+      if(event.target.classList.contains('plus')){
+          const id = Number(event.target.parentElement.id);
+          const productFind = db.products.find(function(product) {
+              return product.id ===id;
+          });
+          if(db.cart[productFind.id]){
+              if(productFind.quantity === db.cart[productFind.id].amount){
+                  return alert('No tenemos mas en bodega');
+              }
+          }
+          db.cart[id].amount++;
+      }
+      if(event.target.classList.contains('less')){
+          const id = Number(event.target.parentElement.id);
+          if(db.cart[id].amount===1){
+              const response = confirm('Lo quieres borrar?');
+              if(response){
+                  delete db.cart[id];
+          }
+          } else{
+              db.cart[id].amount--;
+          }
+      }
+      if(event.target.classList.contains('trash')){
+          const id = Number(event.target.parentElement.id);
+          const response = confirm('Si quieres borrar?');
+          if(!response){
+              return;
+          }
+          delete db.cart[id];
+      }
+      window.localStorage.setItem('cart', JSON.stringify(db.cart));
+      printToCart(db);
+      totalCart(db)
       
-      const circleRed = document.createElement('div');
-      circleRed.className = 'circle circle-red';
+  })
+}
 
-      //create p node
-      const pContainer = document.createElement('div');
-      pContainer.className = 'product__Price__Container';
-      const p = document.createElement("p");
-      p.className = 'product__Price';
-      p.textContent = `$${item.price}`;
+function totalCart(db){
+  const info_total = document.querySelector('.info_total');
+  const info_amount = document.querySelector('.info_amount');
 
-      //append nodes to article
-      article.appendChild(img);
-      article.appendChild(h3);
-      circleContainer.appendChild(circleBlack);
-      circleContainer.appendChild(circleRed);
-      article.appendChild(circleContainer);
-      pContainer.appendChild(p);
-      article.appendChild(pContainer);
+  let totalProducts = 0;
+  let amountProducts = 0;
 
-      //append article to section
-      section.appendChild(article);
+  for(const product in db.cart){
+      amountProducts += db.cart[product].amount;
+      totalProducts += db.cart[product].amount * db.cart[product].price;
+  }
 
-      productsCount++;
-      } else {
-        // For products beyond the initial 15, hide them
-        const article = document.createElement("article");
-        article.className = 'product';
-        article.style.display = 'none';
+  info_total.textContent = 'Total: $'+totalProducts;
+  info_amount.textContent = 'Cantidad: ' +amountProducts;
+}
 
-        const img = document.createElement("img");
-        img.className = 'product__img';
-        img.src = item.image;
-        img.alt = item.name;
-
-        const h3 = document.createElement("h3");
-        h3.className = 'product__name';
-        h3.textContent = item.name;
-
-        const circleContainer = document.createElement('div');
-        circleContainer.className = 'circles';
-
-        const circleBlack = document.createElement('div');
-        circleBlack.className = 'circle circle-black';
-
-        const circleRed = document.createElement('div');
-        circleRed.className = 'circle circle-red';
-
-        const pContainer = document.createElement('div');
-        pContainer.className = 'product__Price__Container';
-        const p = document.createElement("p");
-        p.className = 'product__Price';
-        p.textContent = `$${item.price}`;
-
-        article.appendChild(img);
-        article.appendChild(h3);
-        circleContainer.appendChild(circleBlack);
-        circleContainer.appendChild(circleRed);
-        article.appendChild(circleContainer);
-        pContainer.appendChild(p);
-        article.appendChild(pContainer);
-
-        section.appendChild(article);
+function buyCart(db){
+  const btnBuy = document.querySelector('.btn_buy');
+  btnBuy.addEventListener('click', function(){
+      if(!Object.keys(db.cart).length){
+          return alert('No tienes productos para comprar');
       }
-    });
-
-    const masProductosButton = document.querySelector('footer button');
-    const reservaDerechos = document.querySelector('#reserva-derechos')
-    masProductosButton.addEventListener('click', showMoreProducts);
-
-    function showMoreProducts() {
-      const hiddenProducts = document.querySelectorAll(".product[style='display: none;']");
-      hiddenProducts.forEach(product => (product.style.display = 'block'));
-      masProductosButton.style.display = 'none';
-      reservaDerechos.style.display ='block';
-    }
-
-      const filteredProducts = data.filter(
-        (item) =>
-          item.category === "shirt" ||
-          item.category === "hoddie" ||
-          item.category === "sweater"
-      );
-
-      // Calcular la cantidad total disponible para cada categoría
-      const categoryQuantities = {};
-      filteredProducts.forEach((item) => {
-        if (categoryQuantities[item.category]) {
-          categoryQuantities[item.category] += item.quantity;
-        } else {
-          categoryQuantities[item.category] = item.quantity;
-        }
-      });
-
-      // Obtener el menú desplegable
-      const dropdown = document.querySelector(".dropdown ul ul");
-
-      // Limpiar la lista desplegable
-      while (dropdown.firstChild) {
-        dropdown.removeChild(dropdown.firstChild);
+      const response = confirm('Seguro que quieres comprar?');
+      if(!response){
+          return;
       }
+      for (const product of db.products) {
+          const cartProduct = db.cart[product.id];
+          if(product.id===cartProduct?.id){
+              product.quantity -= cartProduct.amount;
+          }
 
-      // Crear un elemento de lista para cada categoría y su cantidad disponible
-      for (let category in categoryQuantities) {
-        const li = document.createElement("li");
-        const span = document.createElement("span");
-        span.textContent = `${categoryQuantities[category]} Available`;
-        li.textContent = `${
-          category.charAt(0).toUpperCase() + category.slice(1)
-        }`;
-        li.appendChild(span);
-        dropdown.appendChild(li);
       }
-    })
-  .catch((error) => console.error("Error:", error));
+      db.cart = {}
+      window.localStorage.setItem('products', JSON.stringify(db.products));
+      window.localStorage.setItem('cart', JSON.stringify(db.cart));
+      printProducts(db);
+      printToCart(db);
+      totalCart(db);
+
+  })
+}
+
+function handleList(db){
+  const select = document.getElementById('categ');
+  select.addEventListener('change', function(){
+      var selectedOption = this.options[select.selectedIndex];
+      //console.log(selectedOption.text);
+
+      if(selectedOption.text === "Todos"){
+      printProducts(db);
+      };
+
+      if(selectedOption.text === "Camisetas"){
+          console.log("entre")
+          const productsHTML = document.querySelector('.products');
+          let html = '';
+          for (const product of db.products) {
+              if(product.category==='shirt'){
+                  html += `
+                      <div class="product">
+                          <div class="product_img">
+                              <img id=${product.id} class='modal_img'  src="${product.image}" alt="image product">
+                              <h3>${product.name}</h3>
+                          </div>
+
+                          <div class="product_info">
+                              <h4>Precio:$${product.price}</h4>
+                              <p>Stock: ${product.quantity}</p>
+                              <button id= ${product.id} class='cart_buy'>Agregar al carrito</button>
+                          </div>
+                      </div>
+                  `;
+                  
+              }
+          }
+          productsHTML.innerHTML = html;
+      };
+
+      if(selectedOption.text === "Hoddies"){
+          console.log("entre")
+          const productsHTML = document.querySelector('.products');
+          let html = '';
+          for (const product of db.products) {
+              if(product.category==='hoddie'){
+                  html += `
+                      <div class="product">
+                          <div class="product_img">
+                              <img id=${product.id} class='modal_img'  src="${product.image}" alt="image product">
+                              <h3>${product.name}</h3>
+                          </div>
+
+                          <div class="product_info">
+                              <h4>Precio:$${product.price}</h4>
+                              <p>Stock: ${product.quantity}</p>
+                              <button id= ${product.id} class='cart_buy'>Agregar al carrito</button>
+                          </div>
+                      </div>
+                  `;
+                  
+              }
+          }
+          productsHTML.innerHTML = html;
+      };
+
+      if(selectedOption.text === "Sweaters"){
+          console.log("entre")
+          const productsHTML = document.querySelector('.products');
+          let html = '';
+          for (const product of db.products) {
+              if(product.category==='sweater'){
+                  html += `
+                      <div class="product">
+                          <div class="product_img">
+                              <img id=${product.id} class='modal_img'  src="${product.image}" alt="image product">
+                              <h3>${product.name}</h3>
+                          </div>
+
+                          <div class="product_info">
+                              <h4>Precio:$${product.price}</h4>
+                              <p>Stock: ${product.quantity}</p>
+                              <button id= ${product.id} class='cart_buy'>Agregar al carrito</button>
+                          </div>
+                      </div>
+                  `;
+                  
+              }
+          }
+          productsHTML.innerHTML = html;
+      };
+  });
+  
+}
+
+function modalProduct(db){
+  const productsHTML = document.querySelector('.products');
+  const modal = document.querySelector('.modal');
+  const modal_product = document.querySelector('.modal_product');
+  productsHTML.addEventListener('click', function (event) {
+      if(event.target.classList.contains('modal_img')){
+          const id = Number(event.target.id);
+          const productFind = db.products.find(function(product) {
+              return product.id === id;
+          });
+          modal_product.innerHTML = `
+              <div class="modal_img_product">
+                  <img src='${productFind.image}' alt='image product'/>
+              </div>
+              <div class="modal_group">
+                  <h3><span>Nombre: </span>${productFind.name}</h3>
+                  <h3><span>Description: </span>${productFind.description}</h3>
+                  <h3><span>Categoria: </span>${productFind.category}</h3>
+                  <h3><span>Precio:$</span>${productFind.price} | <span>Stock:$</span>${productFind.quantity}</h3>
+              </div>
+              <span>x</span>
+          `;
+          modal.classList.add('active');
+      }
+  });
+}
+
+async function main(){
+  const db = {
+      products: JSON.parse(window.localStorage.getItem('products')) || await getApi(),
+      cart: JSON.parse(window.localStorage.getItem('cart')) || {},
+  }
+  // console.log(db.products);
+  //Se ejecutan los eventos
+  events();
+  //Imprimo los productos en la pagina
+  printProducts(db);
+  //Se adicionan los productos al carrito
+  addToCart(db);
+  //Se imprimen los productos del carrito
+  printToCart(db);
+  //Eventos de usuario en el carrito
+  handleCart(db);
+  //Maneja los totales del carrito
+  totalCart(db);
+  // Maneja el evento de la compra
+  buyCart(db);
+  //Maneja los eventos del navBar
+  handleList(db);
+  //Manejamos el evento del modal
+  modalProduct(db);
+  
+}
+main();

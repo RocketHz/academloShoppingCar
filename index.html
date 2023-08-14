@@ -3,45 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academlo</title>
+    <script src="./js/app.js" defer></script>
     <link rel="stylesheet" href="./css/style.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>EcommerceProject1</title>
 </head>
 <body>
-    <nav class="heading__content">
-        <img src="./assets/img/logo_nombre.png" alt="logo de academlo" class="logo__academlo">
-        <a href="#" class="shopping__car">
-            <img src="./assets/img/shopping-cart-fill.webp" alt="carrito de compras">
-        </a>
-    </nav>
-    <header class="logo__content">
-        <img src="./assets/img/logo blanco.png" alt="logo de academlo">
-    </header>
-    <main class="container">
-        <section class="dropdown__content">
-            <h2>Todos nuestros productos</h2>
-            <div class="dropdown">
-                <ul>
-                  <li>Todos<i class="fa fa-angle-down"></i>
-                    <ul>
-                      
-                    </ul>
-                  </li>
-                </ul>
+
+    <header class="header">
+        <div class="header_content">
+            <div>
+                <img class="header_logo" src="./assets/img/logo_nombre.png">
             </div>
-        </section>
-        <!-- Product -->
-        <section class="product__content" id="product">
-        </section>
-    </main>
+            <div class="header_cart">
+                <img class="cart_button" src="./assets/img/shopping-cart-fill.webp">
+            </div>
+            <div class="menu_cart">
+                <div class="cart_products"></div>
+                <div class="cart_total">
+                    <div class="cart_total_info">
+                        <div class="info_amount">Cantidad: </div>
+                        <div class="info_total">Total: </div>
+                    </div>
+                    <button class="btn_buy">Comprar</button>
+                </div>
+            </div>
+        </div>
+    </header>
+<br>
+    <section class="logo">
+        <div class="logo_content">
+            <img class="content_logo" src="./assets/img/logo blanco.png">
+        </div>
+    </section>
+
+    <section class="category">
+        <div>
+            <h2>Productos</h2>
+        </div>
+        <div class="div_category">
+            <select name="categ" id="categ">
+                <option value="Todos"><span>Todos</span></option>
+                <option value="Camisetas"><span>Camisetas</span></option>
+                <option value="Hoddies"><span>Hoddies</span></option>
+                <option value="Sweaters"><span>Sweaters</span></option>
+            </select>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="products">
+        </div>
+    </section>
+
+    <section class="modal">
+        <div class="modal_product"></div>
+    </section>
+    
+    <br>
     <footer>
-        <button>
-            Mas Productos
-        </button>
         <h3 id="reserva-derechos">
             &copy 2023 Academlo GEN-29 - Todos los derechos reservados
         </h3>
     </footer>
-    <script src="./js/app.js"></script>
+    <br>
+    
 </body>
 </html>
