@@ -126,6 +126,14 @@ img {
   justify-content: space-evenly;
 }
 
+.info_amount {
+  color: #ffffff; /* Cambia el color del texto a blanco */
+}
+
+.info_total {
+  color: #ffffff; /* Cambia el color del texto a blanco */
+}
+
 .btn_buy{
   padding: 5px;
   background-color: #eb4a5a;
