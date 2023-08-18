@@ -145,6 +145,11 @@ img {
   margin-top: 50px;
 }
 
+.content_logo {
+  width: 396px;
+  height: 359px;
+}
+
 .category {
   display: flex;
   justify-content: space-around;
